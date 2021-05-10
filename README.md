@@ -3,14 +3,14 @@ This simple application can be used to manage phone collection. It isn't complet
 I am writting this application on my IT class.
 
 ### Technologies
-Java 8.0
-Android Studio 4.1.2
-SQL Database
+- Java 8.0
+- Android Studio 4.1.2
+- SQL Database
 
 ### Interesting things I have used in this app
-Room library
-Entity class
-Interface Dao
-Repository
-View model
-Live data
+- Room library
+- Entity class
+- Interface Dao
+- Repository
+- View model
+- Live data
