@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Phone.class}, version = 1,exportSchema = false)
+@Database(entities = {Phone.class}, version = 3,exportSchema = false)
 public abstract class PhoneRoomDatabase extends RoomDatabase {
     public abstract PhoneDao phoneDao();
 
@@ -21,7 +21,7 @@ public abstract class PhoneRoomDatabase extends RoomDatabase {
         if(INSTANCE==null){
             synchronized (PhoneRoomDatabase.class){
                 if(INSTANCE==null){
-                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),PhoneRoomDatabase.class,"baza2").addCallback(sRoomDatabaseCallback)
+                    INSTANCE = Room.databaseBuilder(context.getApplicationContext(),PhoneRoomDatabase.class,"baza_3").addCallback(sRoomDatabaseCallback)
                             .fallbackToDestructiveMigration().build();
                 }
             }

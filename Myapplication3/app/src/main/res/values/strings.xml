@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Myapplication3</string>
     <string name="description">Clear all data</string>
+    <string name="producer">Producer</string>
+    <string name="model">Model</string>
+    <string name="version">Android version</string>
+    <string name="site">Web site</string>
+    <string name="webbut">WEB SITE</string>
+    <string name="cancelbut">CANCEL</string>
+    <string name="savebut">SAVE</string>
 </resources>

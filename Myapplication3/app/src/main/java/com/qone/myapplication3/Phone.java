@@ -14,9 +14,8 @@ public class Phone {
     private String producer;
     @NonNull
     private String model;
-    @NonNull
     @ColumnInfo(name="android_version")
-    private double androidVersion;
+    private String androidVersion;
     private String url;
 
     public Phone(@NonNull String producer, @NonNull String model) {
@@ -38,7 +37,7 @@ public class Phone {
         return model;
     }
 
-    public double getAndroidVersion() {
+    public String getAndroidVersion() {
         return androidVersion;
     }
 
@@ -58,7 +57,7 @@ public class Phone {
         this.model = model;
     }
 
-    public void setAndroidVersion(double androidVersion) {
+    public void setAndroidVersion(String androidVersion) {
         this.androidVersion = androidVersion;
     }
 
