@@ -24,6 +24,19 @@ public class PhoneRepository {
             phoneDao.deletaAll();
         });
     }
+
+    void delete(Phone phone){
+        PhoneRoomDatabase.databaseWriteExecutor.execute(()->{
+            phoneDao.delete(phone);
+        });
+    }
+
+    void update(Phone phone){
+        PhoneRoomDatabase.databaseWriteExecutor.execute(()->{
+            phoneDao.update(phone);
+        });
+    }
+
     void insert(Phone phone){
         PhoneRoomDatabase.databaseWriteExecutor.execute(()->{
             phoneDao.insert(phone);

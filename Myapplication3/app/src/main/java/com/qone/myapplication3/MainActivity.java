@@ -3,6 +3,7 @@ package com.qone.myapplication3;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,16 +12,26 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.OnItemClickListener{
 
     private PhoneViewModel phoneViewModel;
     private MyRecyclerViewAdapter adapter;
     private FloatingActionButton fab;
     private String producer, model, version, site;
+
+    @Override
+    public void onItemClickListener(Phone phone){
+        Intent intencja = new Intent(MainActivity.this, SecondActivity.class);
+        intencja.putExtra("id",phone.getId_phone());
+        intencja.putExtra("producer",phone.getProducer());
+        intencja.putExtra("model",phone.getModel());
+        intencja.putExtra("version",phone.getAndroidVersion());
+        intencja.putExtra("site",phone.getUrl());
+        startActivityForResult(intencja,1);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +58,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
 
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                int adapterPosition = viewHolder.getAdapterPosition();
+                Phone p = adapter.getPhone(adapterPosition);
+                phoneViewModel.delete(p);
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     @Override
@@ -71,23 +95,28 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(kodZadania, kodZakonczenia, wyniki);
 
         if (kodZakonczenia == RESULT_CANCELED) {
-            System.out.println("++++++++++++++++++++++   canceled    ++++++++++++++++++++++++");
+            System.out.println("++++++++++++++++   canceled    ++++++++++++++++++");
         }
 
-        if (kodZakonczenia == RESULT_OK) {
+        else {
             Bundle pakunek = wyniki.getExtras();
+
             producer = pakunek.getString("producer");
             model = pakunek.getString("model");
             version = pakunek.getString("version");
             site = pakunek.getString("site");
-            System.out.println("+++++++++++++   data :  ++++++++++++++++");
-            System.out.println(producer+model+version+site);
-
-            Phone p1 = new Phone(producer,model);
+            Phone p1 = new Phone(producer, model);
             p1.setAndroidVersion(version);
             p1.setUrl(site);
-            phoneViewModel.insert(p1);
+            System.out.println(producer+model+version+site);
 
+            Long id = pakunek.getLong("id");
+            if(id!=0){
+                p1.setId_phone(id);
+                phoneViewModel.update(p1);
+            }
+            else
+                phoneViewModel.insert(p1);
         }
     }
 }

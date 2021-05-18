@@ -20,10 +20,21 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     //LayoutInflater is useful to build Java Object based on XML files
     private LayoutInflater inflater;
 
+    interface OnItemClickListener{
+        void onItemClickListener(Phone phone);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
     // data(subjectName and mark as a list) is passed into the constructor
     MyRecyclerViewAdapter(Activity context) {
         this.inflater = context.getLayoutInflater();
         this.phoneList = null;
+        try {
+            this.onItemClickListener = (OnItemClickListener) context;
+        }catch (ClassCastException e){
+            System.out.println("wyjatek ClassCastException");
+        }
     }
 
     @NonNull
@@ -56,6 +67,10 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         return 0;
     }
 
+    public Phone getPhone(int adapterPosition){
+        return phoneList.get(adapterPosition);
+    }
+
     public void setPhoneList(List<Phone> phoneList){
         this.phoneList = phoneList;
         notifyDataSetChanged();
@@ -64,13 +79,20 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public List<Phone> getMarksList(){return phoneList;}
 
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView tv1,tv2;
 
         public ViewHolder(@NonNull View Row) {
             super(Row);
             tv1 = Row.findViewById(R.id.textView);
             tv2 = Row.findViewById(R.id.textView2);
+            Row.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v){
+            int position = getAdapterPosition();
+            if(onItemClickListener!=null)
+                onItemClickListener.onItemClickListener(phoneList.get(position));
         }
     }
 }
